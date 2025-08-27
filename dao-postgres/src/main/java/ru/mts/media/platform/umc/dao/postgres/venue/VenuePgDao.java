@@ -8,7 +8,10 @@ import ru.mts.media.platform.umc.domain.gql.types.Venue;
 import ru.mts.media.platform.umc.domain.venue.VenueSave;
 import ru.mts.media.platform.umc.domain.venue.VenueSot;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -31,9 +34,26 @@ class VenuePgDao implements VenueSot {
     }
 
     @EventListener
-    public void handleVenueCreatedEvent(VenueSave evt) {
-        evt.unwrap()
+    public void handleVenueCreatedEvent(VenueSave event) {
+        event.unwrap()
                 .map(mapper::asEntity)
                 .ifPresent(repository::save);
+    }
+
+    @Override
+    public Map<String, Venue> getVenuesByReferenceIds(List<String> ids) {
+        return repository.findAllByReferenceIdIn(ids).stream()
+                .map(mapper::asModel)
+                .collect(Collectors.toMap(
+                        Venue::getId,
+                        v -> v
+                ));
+    }
+
+    @Override
+    public List<Venue> getAllVenues() {
+        return repository.findAll().stream()
+                .map(mapper::asModel)
+                .toList();
     }
 }

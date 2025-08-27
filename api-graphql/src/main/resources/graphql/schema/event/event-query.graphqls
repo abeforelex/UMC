@@ -1,0 +1,3 @@
+extend type Query {
+    events(limit: Int = 100): [Event!]!
+}

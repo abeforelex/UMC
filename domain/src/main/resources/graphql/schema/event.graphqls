@@ -1,0 +1,16 @@
+scalar LocalDateTime
+
+type Event {
+    id: ID!
+    name: String!
+    startTime: LocalDateTime!
+    endTime: LocalDateTime!
+    venue: Venue!
+}
+
+input SaveEventInput {
+    venueReferenceId: ID!
+    name: String!
+    startTime: String!
+    endTime: String!
+}

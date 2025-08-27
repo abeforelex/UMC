@@ -13,21 +13,23 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class VenueDomainService {
     private final ApplicationEventPublisher eventPublisher;
-    private final VenueSot sot;
-    private final VenueDomainServiceMapper mapper;
+    private final VenueSot venueSot;
+    private final VenueDomainServiceMapper venueMapper;
 
     public VenueSave save(FullExternalId id, SaveVenueInput input) {
-        var evt = sot.getVenueById(id)
+        var venue = venueSot.getVenueById(id)
                 .map(applyPatch(input))
                 .map(VenueSave::new)
                 .orElse(null);
 
-        eventPublisher.publishEvent(evt);
+        if (venue != null) {
+            eventPublisher.publishEvent(venue);
+        }
 
-        return evt;
+        return venue;
     }
 
     private Function<Venue, Venue> applyPatch(SaveVenueInput updates) {
-        return x -> mapper.patch(x, updates);
+        return x -> venueMapper.patch(x, updates);
     }
 }

@@ -1,3 +1,4 @@
 dgs:
   graphql:
-    schema-locations: "classpath*:graphql/schema/**/*.graphqls"
+    schema-locations: "classpath*:graphql/**/*.graphqls"
+    introspection-enabled: true

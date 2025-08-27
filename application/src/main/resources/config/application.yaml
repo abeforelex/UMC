@@ -1,2 +1,11 @@
-spring.application.name: umc
+spring:
+  application:
+    name: umc
+  profiles:
+    active: local
+    config:
+      import:
+        - classpath:config/postgres.yaml
+        - classpath:config/postgres-local.yaml
+        - optional:classpath:config/application-local.yaml
 
